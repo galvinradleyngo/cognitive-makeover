@@ -734,6 +734,7 @@ const ScenarioWorkspace = ({ scenario, onBack }) => {
                     onChange={(e) => setViolationPrinciple(e.target.value)}
                   >
                     <option value="">-- Choose Principle --</option>
+                    <option value="None">None</option>
                     {mayerPrinciples.map(p => (
                       <option key={p.id} value={p.name}>{p.name}</option>
                     ))}
