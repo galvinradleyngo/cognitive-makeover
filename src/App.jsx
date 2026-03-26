@@ -554,6 +554,7 @@ const ScenarioWorkspace = ({ scenario, onBack }) => {
   // Form State
   const [diagnosisText, setDiagnosisText] = useState('');
   const [selectedPrinciples, setSelectedPrinciples] = useState([]);
+  const [treatmentPlan, setTreatmentPlan] = useState('');
   const [violationPrinciple, setViolationPrinciple] = useState('');
   const [violationJustification, setViolationJustification] = useState('');
 
@@ -673,7 +674,7 @@ const ScenarioWorkspace = ({ scenario, onBack }) => {
             {activeTab === 'treatment' && (
               <div className="animate-in fade-in space-y-4">
                 <h3 className="text-lg font-bold text-slate-900 mb-2">Apply Mayer's Principles</h3>
-                <p className="text-sm text-slate-600 mb-4">Select the top 2-3 principles you would use to redesign this artifact to reduce extraneous load. (Click the ? for a hint).</p>
+                <p className="text-sm text-slate-600 mb-4">Select the top 2-3 principles you would use to redesign this artifact to reduce extraneous load, then explain how you would apply those strategies for this learner. Use the ? icon if you want a quick reminder.</p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {mayerPrinciples.map(p => (
@@ -705,6 +706,16 @@ const ScenarioWorkspace = ({ scenario, onBack }) => {
                       )}
                     </div>
                   ))}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">How will you use these principles?</label>
+                  <textarea
+                    className="w-full h-36 p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 resize-none"
+                    placeholder="Explain what you would change and how the selected principles would shape the redesign for this learner..."
+                    value={treatmentPlan}
+                    onChange={(e) => setTreatmentPlan(e.target.value)}
+                  ></textarea>
                 </div>
               </div>
             )}
@@ -769,16 +780,21 @@ const ScenarioWorkspace = ({ scenario, onBack }) => {
                   <h4 className="flex items-center gap-2 font-bold text-slate-800 border-b border-slate-200 pb-2 mb-3">
                     <FileText size={16} className="text-emerald-600"/> 2. The Treatment Plan
                   </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedPrinciples.length > 0 ? (
-                      selectedPrinciples.map(id => {
-                        const principle = mayerPrinciples.find(p => p.id === id);
-                        return <span key={id} className="bg-emerald-100 text-emerald-800 border border-emerald-200 px-3 py-1 rounded-full text-sm font-bold shadow-sm">{principle?.name}</span>;
-                      })
-                    ) : (
-                      <span className="text-slate-400 text-sm italic">No principles selected.</span>
-                    )}
-                  </div>
+                  {selectedPrinciples.length > 0 ? (
+                    <>
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {selectedPrinciples.map(id => {
+                          const principle = mayerPrinciples.find(p => p.id === id);
+                          return <span key={id} className="bg-emerald-100 text-emerald-800 border border-emerald-200 px-3 py-1 rounded-full text-sm font-bold shadow-sm">{principle?.name}</span>;
+                        })}
+                      </div>
+                      <p className="text-sm text-slate-700 bg-slate-50 p-4 rounded-lg border border-slate-100 whitespace-pre-wrap">
+                        {treatmentPlan || <span className="text-slate-400 italic">No treatment explanation provided.</span>}
+                      </p>
+                    </>
+                  ) : (
+                    <span className="text-slate-400 text-sm italic">No principles selected.</span>
+                  )}
                 </div>
 
                 <div>
